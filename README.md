@@ -9,7 +9,7 @@
 
 # JClaw
 
-JClaw is a Java-based macro framework for automated tasks. Includes features for OpenCV-based pixel search, overlay interface, clipboard utils, keyboard and mouse operation. JClaw was inspired by [sikuli-core](https://github.com/sikuli/sikuli-core).
+JClaw is a Java-based macro framework for automated tasks. Includes features for OpenCV-based image search, overlay interface, clipboard utils, keyboard and mouse operation. JClaw was inspired by [sikuli-core](https://github.com/sikuli/sikuli-core).
 
 ## Examples
 ![](https://user-images.githubusercontent.com/58779799/115538576-0033df80-a2d7-11eb-94a7-1da9b53a0a8b.gif)

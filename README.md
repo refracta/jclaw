@@ -48,6 +48,28 @@ dependencies {
     compile 'com.github.refracta.jclaw:jclaw:0.1'
 }
 ```
+
+## Dependencies
+This project requires **Java 8+**.
+All dependencies are managed automatically by Maven.
+ * JNA Platform
+   * Version: **5.8.0**
+   * [Github](https://github.com/java-native-access/jna)
+ * Apache Commons IO
+   * Version: **2.8.0**
+   * [Github](https://github.com/apache/commons-io)
+ * OpenCV
+   * Version: **4.5.1-2**
+   * [Github](https://github.com/openpnp/opencv)
+
+## How to Contribute
+1. Clone repository from develop branch and create a new branch
+```bash
+git checkout https://github.com/refracta/jclaw -b name_for_new_branch
+```
+2. Make changes and test
+3. Submit Pull Request with comprehensive description of changes
+
 ## Related Projects
  - [JAHK](https://github.com/refracta/jahk)
  - [sikuli-core](https://github.com/sikuli/sikuli-core)

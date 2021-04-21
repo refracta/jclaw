@@ -1,4 +1,4 @@
-package com.github.refracta.jclaw.awt;
+package com.github.refracta.jclaw.core.system;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
@@ -6,19 +6,19 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 
-public class Clipboard {
-    public static final Clipboard.TextType HTML = new Clipboard.TextType("text/html");
-    public static final Clipboard.TextType PLAIN = new Clipboard.TextType("text/plain");
-    public static final Clipboard.Charset UTF8 = new Clipboard.Charset("UTF-8");
-    public static final Clipboard.Charset UTF16 = new Clipboard.Charset("UTF-16");
-    public static final Clipboard.Charset UNICODE = new Clipboard.Charset("unicode");
-    public static final Clipboard.Charset US_ASCII = new Clipboard.Charset("US-ASCII");
-    public static final Clipboard.TransferType READER = new Clipboard.TransferType(Reader.class);
-    public static final Clipboard.TransferType INPUT_STREAM = new Clipboard.TransferType(InputStream.class);
-    public static final Clipboard.TransferType CHAR_BUFFER = new Clipboard.TransferType(CharBuffer.class);
-    public static final Clipboard.TransferType BYTE_BUFFER = new Clipboard.TransferType(ByteBuffer.class);
+public class JClawClipboard {
+    public static final JClawClipboard.TextType HTML = new JClawClipboard.TextType("text/html");
+    public static final JClawClipboard.TextType PLAIN = new JClawClipboard.TextType("text/plain");
+    public static final JClawClipboard.Charset UTF8 = new JClawClipboard.Charset("UTF-8");
+    public static final JClawClipboard.Charset UTF16 = new JClawClipboard.Charset("UTF-16");
+    public static final JClawClipboard.Charset UNICODE = new JClawClipboard.Charset("unicode");
+    public static final JClawClipboard.Charset US_ASCII = new JClawClipboard.Charset("US-ASCII");
+    public static final JClawClipboard.TransferType READER = new JClawClipboard.TransferType(Reader.class);
+    public static final JClawClipboard.TransferType INPUT_STREAM = new JClawClipboard.TransferType(InputStream.class);
+    public static final JClawClipboard.TransferType CHAR_BUFFER = new JClawClipboard.TransferType(CharBuffer.class);
+    public static final JClawClipboard.TransferType BYTE_BUFFER = new JClawClipboard.TransferType(ByteBuffer.class);
 
-    private Clipboard() {
+    private JClawClipboard() {
     }
 
     public static void clear() {
@@ -38,7 +38,7 @@ public class Clipboard {
     }
 
     public static String getText() {
-        Transferable clipboardContents = getSystemClipboard().getContents(Clipboard.class);
+        Transferable clipboardContents = getSystemClipboard().getContents(JClawClipboard.class);
         DataFlavor[] flavors = clipboardContents.getTransferDataFlavors();
         if (flavors.length == 0) {
             return null;
@@ -86,14 +86,36 @@ public class Clipboard {
         getSystemClipboard().setContents(copy, copy);
     }
 
-    public static void putText(Clipboard.TextType type, Clipboard.Charset charset, Clipboard.TransferType transferType, CharSequence data) {
+    public static void putText(JClawClipboard.TextType type, JClawClipboard.Charset charset, JClawClipboard.TransferType transferType, CharSequence data) {
         String mimeType = type + "; charset=" + charset + "; class=" + transferType;
-        Clipboard.TextTransferable transferable = new Clipboard.TextTransferable(mimeType, data.toString());
+        JClawClipboard.TextTransferable transferable = new JClawClipboard.TextTransferable(mimeType, data.toString());
         getSystemClipboard().setContents(transferable, transferable);
     }
 
     public static java.awt.datatransfer.Clipboard getSystemClipboard() {
         return Toolkit.getDefaultToolkit().getSystemClipboard();
+    }
+
+    public static Image getImage() {
+        Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+
+        try {
+            if (t != null && t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+                Image image = (Image) t.getTransferData(DataFlavor.imageFlavor);
+                return image;
+            }
+        } catch (Exception e) {
+        }
+
+        return null;
+    }
+
+    public static void putImage(Image image) {
+        if (image == null)
+            throw new IllegalArgumentException("Image can't be null");
+
+        ImageTransferable transferable = new ImageTransferable(image);
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(transferable, null);
     }
 
     public static class TransferType {
@@ -171,6 +193,31 @@ public class Clipboard {
         }
 
         public void lostOwnership(java.awt.datatransfer.Clipboard clipboard, Transferable contents) {
+        }
+    }
+
+    private static class ImageTransferable implements Transferable {
+        private Image image;
+
+        public ImageTransferable(Image image) {
+            this.image = image;
+        }
+
+        public Object getTransferData(DataFlavor flavor)
+                throws UnsupportedFlavorException {
+            if (isDataFlavorSupported(flavor)) {
+                return image;
+            } else {
+                throw new UnsupportedFlavorException(flavor);
+            }
+        }
+
+        public boolean isDataFlavorSupported(DataFlavor flavor) {
+            return flavor == DataFlavor.imageFlavor;
+        }
+
+        public DataFlavor[] getTransferDataFlavors() {
+            return new DataFlavor[]{DataFlavor.imageFlavor};
         }
     }
 }

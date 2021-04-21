@@ -2,7 +2,6 @@ package com.github.refracta.jclaw.core.system;
 
 import com.github.refracta.jclaw.awt.AWTDesktop;
 import com.github.refracta.jclaw.awt.AWTRobot;
-import com.github.refracta.jclaw.awt.Clipboard;
 import com.github.refracta.jclaw.awt.env.Env;
 
 import java.awt.event.KeyEvent;
@@ -16,7 +15,7 @@ public class JClawKeyboard {
     }
 
     public static String copy() {
-        Clipboard.clear();
+        JClawClipboard.clear();
 
         int mod = Env.getHotkeyModifier();
         AWTRobot robot = getRobot();
@@ -25,7 +24,7 @@ public class JClawKeyboard {
         robot.keyRelease(KeyEvent.VK_C);
         robot.keyRelease(mod);
 
-        String text = Clipboard.getText();
+        String text = JClawClipboard.getText();
         return text;
     }
 
@@ -33,7 +32,7 @@ public class JClawKeyboard {
         if (text == null) {
             return;
         }
-        Clipboard.putText(Clipboard.PLAIN, Clipboard.UTF8, Clipboard.BYTE_BUFFER, text);
+        JClawClipboard.putText(JClawClipboard.PLAIN, JClawClipboard.UTF8, JClawClipboard.BYTE_BUFFER, text);
         int mod = Env.getHotkeyModifier();
         AWTRobot robot = getRobot();
         robot.keyPress(mod);

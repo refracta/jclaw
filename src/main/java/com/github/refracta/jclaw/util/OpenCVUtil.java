@@ -42,7 +42,7 @@ public class OpenCVUtil {
         return bufferedImage;
     }
 
-    public static void saveMatImage(Mat image, String path) {
+    public static void saveMatAsImage(Mat image, String path) {
         BufferedImage bufferedImage = mat2BufferedImage(image);
         File file = new File(path);
         try {

@@ -10,7 +10,7 @@ public class JClawMouse {
         AWTDesktop.getRobot().mouseMove(screenRectangle.x + x, screenRectangle.y + y);
     }
 
-    public static void moveByPoint(Rectangle screenRectangle, Point clickPoint) {
+    public static void move(Rectangle screenRectangle, Point clickPoint) {
         move(screenRectangle, clickPoint.x, clickPoint.y);
     }
 

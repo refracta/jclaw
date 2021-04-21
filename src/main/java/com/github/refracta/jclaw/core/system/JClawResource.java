@@ -14,8 +14,6 @@ import java.net.URL;
 public class JClawResource {
     public static File getFileFromURL(String path) {
         URL url = JClawResource.class.getClassLoader().getResource(path);
-        System.out.println(path);
-        System.out.println(url);
         File file = null;
         try {
             file = new File(url.toURI());
@@ -26,13 +24,17 @@ public class JClawResource {
         }
     }
 
-    public static Mat getImageFromPath(String path) {
+    public static Mat getMatFromPath(String path) {
         try {
-            return Imgcodecs.imdecode(new MatOfByte(IOUtils.toByteArray(JClawResource.class.getClassLoader().getResourceAsStream(path))), Imgcodecs.IMREAD_UNCHANGED);
+            return getMatFromBytes(IOUtils.toByteArray(JClawResource.class.getClassLoader().getResourceAsStream(path)));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static Mat getMatFromBytes(byte[] bytes) {
+        return Imgcodecs.imdecode(new MatOfByte(bytes), Imgcodecs.IMREAD_UNCHANGED);
     }
 
     public static void copyFromPath(String src, String dest) {
